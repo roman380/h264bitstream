@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
 #else
 
-    infile = fopen(argv[1], "rb");
+    infile = (strcmp(argv[1], "stdin") == 0) ? stdin : fopen(argv[1], "rb");
 
 #endif
 
