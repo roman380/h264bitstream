@@ -117,9 +117,9 @@ static inline int bs_eof(bs_t* b) { if (b->p >= b->end) { return 1; } else { ret
 
 static inline int bs_overrun(bs_t* b) { if (b->p > b->end) { return 1; } else { return 0; } }
 
-static inline int bs_pos(bs_t* b) { if (b->p > b->end) { return (b->end - b->start); } else { return (b->p - b->start); } }
+static inline int bs_pos(bs_t* b) { if (b->p > b->end) { return (int) (b->end - b->start); } else { return (int) (b->p - b->start); } }
 
-static inline int bs_bytes_left(bs_t* b) { return (b->end - b->p); }
+static inline int bs_bytes_left(bs_t* b) { return (int) (b->end - b->p); }
 
 static inline uint32_t bs_read_u1(bs_t* b)
 {
@@ -331,7 +331,7 @@ static inline void bs_write_se(bs_t* b, int32_t v)
 static inline int bs_read_bytes(bs_t* b, uint8_t* buf, int len)
 {
     int actual_len = len;
-    if (b->end - b->p < actual_len) { actual_len = b->end - b->p; }
+    if (b->end - b->p < actual_len) { actual_len = (int) (b->end - b->p); }
     if (actual_len < 0) { actual_len = 0; }
     memcpy(buf, b->p, actual_len);
     if (len < 0) { len = 0; }
@@ -342,7 +342,7 @@ static inline int bs_read_bytes(bs_t* b, uint8_t* buf, int len)
 static inline int bs_write_bytes(bs_t* b, uint8_t* buf, int len)
 {
     int actual_len = len;
-    if (b->end - b->p < actual_len) { actual_len = b->end - b->p; }
+    if (b->end - b->p < actual_len) { actual_len = (int) (b->end - b->p); }
     if (actual_len < 0) { actual_len = 0; }
     memcpy(b->p, buf, actual_len);
     if (len < 0) { len = 0; }
@@ -353,7 +353,7 @@ static inline int bs_write_bytes(bs_t* b, uint8_t* buf, int len)
 static inline int bs_skip_bytes(bs_t* b, int len)
 {
     int actual_len = len;
-    if (b->end - b->p < actual_len) { actual_len = b->end - b->p; }
+    if (b->end - b->p < actual_len) { actual_len = (int) (b->end - b->p); }
     if (actual_len < 0) { actual_len = 0; }
     if (len < 0) { len = 0; }
     b->p += len;

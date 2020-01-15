@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
 #else
 
-    infile = fopen(argv[1], "rb");
+    infile = (strcmp(argv[1], "stdin") == 0) ? stdin : fopen(argv[1], "rb");
 
 #endif
 
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 
         sz += rsz;
 
-        while (find_nal_unit(p, sz, &nal_start, &nal_end) > 0)
+        while (find_nal_unit(p, (int) sz, &nal_start, &nal_end) > 0)
         {
             if ( opt_verbose > 0 )
             {
