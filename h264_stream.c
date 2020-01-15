@@ -768,7 +768,7 @@ void read_pic_parameter_set_rbsp(h264_stream_t* h, bs_t* b)
     if( 1 ) { have_more_data = more_rbsp_data(b); }
     if( 0 )
     {
-        have_more_data = pps->transform_8x8_mode_flag | pps->pic_scaling_matrix_present_flag | pps->second_chroma_qp_index_offset != 0;
+        have_more_data = pps->transform_8x8_mode_flag || pps->pic_scaling_matrix_present_flag || pps->second_chroma_qp_index_offset != 0;
     }
 
     if( have_more_data )
@@ -892,7 +892,7 @@ void read_slice_layer_rbsp(h264_stream_t* h,  bs_t* b)
     {
         if ( slice_data->rbsp_buf != NULL ) free( slice_data->rbsp_buf ); 
         uint8_t *sptr = b->p + (!!b->bits_left); // CABAC-specific: skip alignment bits, if there are any
-        slice_data->rbsp_size = b->end - sptr;
+        slice_data->rbsp_size = (int) (b->end - sptr);
         
         slice_data->rbsp_buf = (uint8_t*)malloc(slice_data->rbsp_size);
         memcpy( slice_data->rbsp_buf, sptr, slice_data->rbsp_size );
@@ -2097,7 +2097,7 @@ void write_pic_parameter_set_rbsp(h264_stream_t* h, bs_t* b)
     if( 0 ) { have_more_data = more_rbsp_data(b); }
     if( 1 )
     {
-        have_more_data = pps->transform_8x8_mode_flag | pps->pic_scaling_matrix_present_flag | pps->second_chroma_qp_index_offset != 0;
+        have_more_data = pps->transform_8x8_mode_flag || pps->pic_scaling_matrix_present_flag || pps->second_chroma_qp_index_offset != 0;
     }
 
     if( have_more_data )
@@ -2221,7 +2221,7 @@ void write_slice_layer_rbsp(h264_stream_t* h,  bs_t* b)
     {
         if ( slice_data->rbsp_buf != NULL ) free( slice_data->rbsp_buf ); 
         uint8_t *sptr = b->p + (!!b->bits_left); // CABAC-specific: skip alignment bits, if there are any
-        slice_data->rbsp_size = b->end - sptr;
+        slice_data->rbsp_size = (int) (b->end - sptr);
         
         slice_data->rbsp_buf = (uint8_t*)malloc(slice_data->rbsp_size);
         memcpy( slice_data->rbsp_buf, sptr, slice_data->rbsp_size );
@@ -3426,7 +3426,7 @@ void read_debug_pic_parameter_set_rbsp(h264_stream_t* h, bs_t* b)
     if( 1 ) { have_more_data = more_rbsp_data(b); }
     if( 0 )
     {
-        have_more_data = pps->transform_8x8_mode_flag | pps->pic_scaling_matrix_present_flag | pps->second_chroma_qp_index_offset != 0;
+        have_more_data = pps->transform_8x8_mode_flag || pps->pic_scaling_matrix_present_flag || pps->second_chroma_qp_index_offset != 0;
     }
 
     if( have_more_data )
@@ -3550,7 +3550,7 @@ void read_debug_slice_layer_rbsp(h264_stream_t* h,  bs_t* b)
     {
         if ( slice_data->rbsp_buf != NULL ) free( slice_data->rbsp_buf ); 
         uint8_t *sptr = b->p + (!!b->bits_left); // CABAC-specific: skip alignment bits, if there are any
-        slice_data->rbsp_size = b->end - sptr;
+        slice_data->rbsp_size = (int) (b->end - sptr);
 
         if ( slice_data->rbsp_size > 0 )
         {
